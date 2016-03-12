@@ -13,9 +13,10 @@ h.open(device[0], device[1])
 h.write([0x0F, 0x03, 0x55, 0x00, 0x55, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
 h.read(64, 1000)
 
-print ("work state, charge mAh, charge timer, out voltage, current, ext temp, int temp, int impedance, cell 1, cell 2, cell 3, cell 4, cell 5, cell 6, cell 7, cell 8")
+print ("work state, charge mAh, charge timer, out voltage, current, ext temp, int temp, cell 1, cell 2, cell 3, cell 4, cell 5, cell 6")
 
 t = time.clock()
+
 while True:
 	h.write([0])
 	data = h.read(64, 1000)
@@ -32,15 +33,12 @@ while True:
 		str((data[11] * 256 + data[12]) / 1000) + ", " +
 		str(data[13]) + ", " +
 		str(data[14]) + ", " +
-		str(data[15] * 256 + data[16]) + ", " +
 		str((data[17] * 256 + data[18]) / 1000) + ", " +
 		str((data[19] * 256 + data[20]) / 1000) + ", " +
 		str((data[21] * 256 + data[22]) / 1000) + ", " +
 		str((data[23] * 256 + data[24]) / 1000) + ", " +
 		str((data[25] * 256 + data[26]) / 1000) + ", " +
-		str((data[27] * 256 + data[28]) / 1000) + ", " +
-		str((data[29] * 256 + data[30]) / 1000) + ", " +
-		str((data[31] * 256 + data[32]) / 1000))
+		str((data[27] * 256 + data[28]) / 1000))
 	
 	time.sleep(query_interval - (time.clock() - t))
 	t = time.clock()
