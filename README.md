@@ -13,11 +13,14 @@ Current progress of protocol decoding
 Storage charge 1S 2.0a charge 2.0a discharge. Packet needs 0x00 at the start to work when sent with h.write()
 ```
 0f:16:05:00:01:01:02:07:d0:07:d0:0c:1c:10:04:00:00:00:00:00:00:00:00:f3:ff:ff + :00 * 38
-              |  |  |     |                                         |xx?? checksom
-              |  |  |     |xx:xx discharge current
-              |  |  |xx:xx charge current 
-              |  |xx 00=charge, 01=discharge, 02=storage
-              |xx = # cells 01..06.    
+           |  |  |  |     |     |     |                             |xx?? checksom
+           |  |  |  |     |     |     |xx:xx charge voltage 10:04 = 4.1 0f:0f=4.08
+           |  |  |  |     |     |xx:xx discharge voltage 0b:54 ?= 3.18 0c:80 = 3.20
+           |  |  |  |     |xx:xx discharge current
+           |  |  |  |xx:xx charge current 
+           |  |  |xx 00=charge, 01=discharge, 02=storage
+           |  |xx = # cells 01..06.    
+           |xx cell type. 00=lipo, 01=lion, 02=life, 03=lihv, 04=nimh, 05=nicd, 06=pb
 ```
 
 ```
