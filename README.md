@@ -12,7 +12,7 @@ Forking to use with B6AC v2 (pr comments by alexwlpr) and adding ability to cont
 Current progress of protocol decoding
 ```
 #0f:16:05:00:01:01:02:07:d0:07:d0:0c:1c:10:04:00:00:00:00:00:00:00:00:f3:ff:ff + 00 ... 00
-#           |  |  |  |     |     |     |                             |xx?? checksum??
+#           |  |  |  |     |     |     |                             |xx CheckSum8 Modulo 256 (skip first 2 bytes!)
 #           |  |  |  |     |     |     |10:04 = 4100 mV charge voltage 16 bit mV
 #           |  |  |  |     |     |0c:1c = 3100 mV discharge voltage 16 bit mV
 #           |  |  |  |     |07:d0 = 2000mA discharge current 16 bit mA
