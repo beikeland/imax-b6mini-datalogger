@@ -51,6 +51,6 @@ def packBuffer(operation, celltype=None, cellcount=None, chargecurrent=None, dis
   else:
     return pack(">xHBxBHxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", 0x0F03, operation, operation, 0xFFFF)
     
-h.write(packBuffer(CHARGE, LION, S1, 2000,2000,3100,4100).encode('hex_codec'))
-h.write(packBuffer(POLL).encode('hex_codec'))
+h.write(packBuffer(CHARGE, LION, S1, 2000,2000,3100,4100))
+h.write(packBuffer(POLL))
 ```
