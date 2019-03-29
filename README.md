@@ -23,6 +23,8 @@ Current progress of protocol decoding
 ```
 
 ```
+#DISCLAIMER. Python is _not_ my native language. 
+#Only tested singe cell lithium ion cell - use at your own risk
 from struct import *
 LIPO = 0
 LION = 1
@@ -43,15 +45,21 @@ S6=6
 POLL=0x55
 STOP=0xFE
 
-def packBuffer(operation, celltype=None, cellcount=None, chargecurrent=None, dischargecurrent=None, dischargecutoff=None, chargecutoff=None):
-  if celltype is not None and chargecutoff is not None:
-    buffer = pack(">x2H3b4H8x", 0x0F16, 0x0500, celltype, cellcount, operation, ((6000, chargecurrent)[chargecurrent < 6000]), ((2000, dischargecurrent)[dischargecurrent < 2000]), dischargecutoff, chargecutoff)
-    buffer = buffer + pack(">BH37x", sum(map(ord, buffer))%256, 0xffff) #add checksum and padding
-    return buffer
-  else:
-    return pack(">xHBxBH56x", 0x0F03, operation, operation, 0xFFFF)     #cheksum = operation byte it seems?
-
-h.write(packBuffer(CHARGE, LION, S1, 6001, 2001, 3100, 4100))
+def packstrbuff(operation, celltype=None, cellcount=None, chargecurrent=None, dischargecurrent=None, dischargecutoff=None, chargecutoff=None):
+	#pack binary string into data packet
+	if celltype is not None and chargecutoff is not None:
+		strbuff = pack(">H3b4H8x", 0x0500, celltype, cellcount, operation, ((6000, chargecurrent)[chargecurrent < 6000]), ((2000, dischargecurrent)[dischargecurrent < 2000]), dischargecutoff, chargecutoff)
+		strbuff = pack(">xH", 0x0F16) + strbuff + pack(">BH37x", sum(map(ord, strbuff))%256, 0xFFFF) #add checksum and padding
+	#or into a short control packet
+	else:
+		strbuff = pack(">xHBxBH56x", 0x0F03, operation, operation, 0xFFFF)		 #cheksum = operation byte it seems?
+	#then convert string to list of integers - must be a better way?!
+	listbuff = []
+	for c in strbuff:
+		listbuff.append(ord(c))
+	return listbuff
+  
+h.write(packBuffer(CHARGE, LION, S1, 1000, 1000, 3100, 4100))
 h.write(packBuffer(POLL))
 
 ```
