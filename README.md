@@ -45,12 +45,13 @@ STOP=0xFE
 
 def packBuffer(operation, celltype=None, cellcount=None, chargecurrent=None, dischargecurrent=None, dischargecutoff=None, chargecutoff=None):
   if celltype is not None and chargecutoff is not None:
-    buffer = pack(">xHHbbbHHHHxxxxxxxx", 0x0F16, 0x0500, celltype, cellcount, operation,chargecurrent,dischargecurrent,dischargecutoff,chargecutoff)
-    buffer = buffer + pack(">BHxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", sum(map(ord, buffer))%256, 0xffff)
+    buffer = pack(">x2H3b4H8x", 0x0F16, 0x0500, celltype, cellcount, operation, ((6000, chargecurrent)[chargecurrent < 6000]), ((2000, dischargecurrent)[dischargecurrent < 2000]), dischargecutoff, chargecutoff)
+    buffer = buffer + pack(">BH37x", sum(map(ord, buffer))%256, 0xffff) #add checksum and padding
     return buffer
   else:
-    return pack(">xHBxBHxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", 0x0F03, operation, operation, 0xFFFF)
-    
-h.write(packBuffer(CHARGE, LION, S1, 2000,2000,3100,4100))
-h.write(packBuffer(POLL))
+    return pack(">xHBxBH56x", 0x0F03, operation, operation, 0xFFFF)     #cheksum = operation byte it seems?
+
+h.write(packBuffer(CHARGE, LION, S1, 6001, 2001, 3100, 4100).encode('hex_codec'))
+h.write(packBuffer(POLL).encode('hex_codec'))
+
 ```
