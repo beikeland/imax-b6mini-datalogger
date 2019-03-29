@@ -51,7 +51,7 @@ def packBuffer(operation, celltype=None, cellcount=None, chargecurrent=None, dis
   else:
     return pack(">xHBxBH56x", 0x0F03, operation, operation, 0xFFFF)     #cheksum = operation byte it seems?
 
-h.write(packBuffer(CHARGE, LION, S1, 6001, 2001, 3100, 4100).encode('hex_codec'))
-h.write(packBuffer(POLL).encode('hex_codec'))
+h.write(packBuffer(CHARGE, LION, S1, 6001, 2001, 3100, 4100))
+h.write(packBuffer(POLL))
 
 ```
