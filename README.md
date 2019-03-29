@@ -45,7 +45,7 @@ S6=6
 POLL=0x55
 STOP=0xFE
 
-def packstrbuff(operation, celltype=None, cellcount=None, chargecurrent=None, dischargecurrent=None, dischargecutoff=None, chargecutoff=None):
+def packBuffer(operation, celltype=None, cellcount=None, chargecurrent=None, dischargecurrent=None, dischargecutoff=None, chargecutoff=None):
 	#pack binary string into data packet
 	if celltype is not None and chargecutoff is not None:
 		strbuff = pack(">H3b4H8x", 0x0500, celltype, cellcount, operation, ((6000, chargecurrent)[chargecurrent < 6000]), ((2000, dischargecurrent)[dischargecurrent < 2000]), dischargecutoff, chargecutoff)
