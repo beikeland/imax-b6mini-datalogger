@@ -5,7 +5,10 @@ Usage: pipe stdout into file, if necessary run from root. Query interval and dev
 
 Requires https://pypi.python.org/pypi/hidapi/
 
-Not tested with Windows, but it should work.
+Not tested with Windows, but it should work. (I tested windows, worked fine). To run as regular user on linux apply udev rule f.ex. as /etc/udev/rules.d/99-hid.rules
+
+```SUBSYSTEM=="usb", ATTRS{idVendor}=="0000", ATTRS{idProduct}=="0001", MODE="0666"```
+
 
 Forking to use with B6AC v2 (pr comments by alexwlpr) and adding ability to control charge/discharge/storage cycle. F.ex. charge and discharge 3 cycles and then apply storage charge.
 
